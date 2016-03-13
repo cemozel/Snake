@@ -6,21 +6,21 @@ package sonetta.snakebox;
 
 public class Location{
 
-    private int max;
+    private int max,min;
+    private int s = GameBoard.grid;
 
     public Location() {
-
+        //screenX = 2392 screenY = 1440
     }
 
     public int getLocationX() {
-        max = GameBoard.screenX/GameBoard.grid-1;
-        System.out.println("X: "+max);
-        return GameBoard.grid*((int)(1+Math.random()*(max)));
+        max = GameBoard.screenX/s-1;
+        return s*((int)(1+Math.random()*(max)));
     }
 
     public int getLocationY() {
-        max = GameBoard.screenY/GameBoard.grid-1;
-        System.out.println("Y: "+max);
-        return GameBoard.grid*((int)(2+Math.random()*(max)));
+        max = GameBoard.screenY/s-2;
+        min = 2;
+        return s*((int) (Math.random()*(max - min)+min));
     }
 }

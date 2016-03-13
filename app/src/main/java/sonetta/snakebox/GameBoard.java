@@ -29,7 +29,7 @@ public class GameBoard extends SurfaceView implements Runnable {
     private SurfaceHolder surfaceHolder;
     private Location location = new Location();
     private volatile boolean playing=true;
-    public boolean paused = true, gameOver = false;
+    public boolean paused = true, gameOver = false, first = true;
     private Canvas canvas;
     private Walls walls;
     private Paint paint;
@@ -54,6 +54,7 @@ public class GameBoard extends SurfaceView implements Runnable {
 
     public void begin() {
         gameOver = false;
+        first = true;
         dx = dy = 0;
         difficulty = 75;
         bodySize=1;
@@ -62,7 +63,7 @@ public class GameBoard extends SurfaceView implements Runnable {
         walls = new Walls();
         snake = new Snake(context,600,600);
         snakeBody.add(snake);
-        sfood = new Food(360,360);
+        sfood = new Food(context,360,360);
     }
 
     @Override
@@ -122,20 +123,19 @@ public class GameBoard extends SurfaceView implements Runnable {
     }
 
     public void checkGameOver() {
-        /*if(bodySize>2) {
-            for(int i = 0; i<bodySize; i++) {
-                if(player.getRect().intersect(body.get(i).getRect())) {
+        if(bodySize>2) {
+            for(int i = 0; i<bodySize-1; i++) {
+                if(snake.getRect().intersect(snakeBody.get(i).getRect())) {
                     gameOver = true;
                 }
             }
-        }*/
+        }
 
         /*if(player.getX() <= 0 || player.getX() >= screenX || player.getY() <= 0 || player.getY() >= screenY) {
             gameOver = true;
         }*/
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void draw() {
         if (surfaceHolder.getSurface().isValid()) {
             canvas = surfaceHolder.lockCanvas();
@@ -145,32 +145,81 @@ public class GameBoard extends SurfaceView implements Runnable {
 
             // Draw snake
             for(int i =0; i<snakeBody.size(); i++) {
-                canvas.drawBitmap(snakeBody.get(i).getBitmap1(),snakeBody.get(i).getX(),
-                        snakeBody.get(i).getY(),paint);
                 // Draw face and tail
                 if(i==0) {
-                    Bitmap tail = BitmapFactory.decodeResource(context.getResources(),R.drawable.invader2);
-                    tail = Bitmap.createScaledBitmap(tail,60,60,false);
-                    canvas.drawBitmap(tail,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    if(dx>0) {
+                        canvas.drawBitmap(snake.drawTail(),snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dx<0) {
+                        Bitmap tail = BitmapFactory.decodeResource(context.getResources(),R.drawable.westtail);
+                        tail = Bitmap.createScaledBitmap(tail,grid,grid,false);
+                        canvas.drawBitmap(tail,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dy>0) {
+                        Bitmap tail = BitmapFactory.decodeResource(context.getResources(),R.drawable.northtail);
+                        tail = Bitmap.createScaledBitmap(tail,grid,grid,false);
+                        canvas.drawBitmap(tail,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else {
+                        Bitmap tail = BitmapFactory.decodeResource(context.getResources(),R.drawable.southtail);
+                        tail = Bitmap.createScaledBitmap(tail,grid,grid,false);
+                        canvas.drawBitmap(tail,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    }
                 } else if (i==snakeBody.size()-1) {
-                    Bitmap face = BitmapFactory.decodeResource(context.getResources(),R.drawable.invader2);
-                    face = Bitmap.createScaledBitmap(face,60,60,false);
-                    canvas.drawBitmap(face,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    if(dx>0) {
+                        Bitmap face = BitmapFactory.decodeResource(context.getResources(),R.drawable.eastface);
+                        face = Bitmap.createScaledBitmap(face,grid,grid,false);
+                        canvas.drawBitmap(face,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dx<0) {
+                        Bitmap face = BitmapFactory.decodeResource(context.getResources(),R.drawable.westface);
+                        face = Bitmap.createScaledBitmap(face,grid,grid,false);
+                        canvas.drawBitmap(face,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dy>0) {
+                        Bitmap face = BitmapFactory.decodeResource(context.getResources(),R.drawable.northface);
+                        face = Bitmap.createScaledBitmap(face,grid,grid,false);
+                        canvas.drawBitmap(face,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else {
+                        Bitmap face = BitmapFactory.decodeResource(context.getResources(),R.drawable.southface);
+                        face = Bitmap.createScaledBitmap(face,grid,grid,false);
+                        canvas.drawBitmap(face,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    }
+                } else {
+                    if(dx>0) {
+                        Bitmap body = BitmapFactory.decodeResource(context.getResources(),R.drawable.eastbody);
+                        body = Bitmap.createScaledBitmap(body,grid,grid,false);
+                        canvas.drawBitmap(body,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dx<0) {
+                        Bitmap body = BitmapFactory.decodeResource(context.getResources(),R.drawable.westbody);
+                        body = Bitmap.createScaledBitmap(body,grid,grid,false);
+                        canvas.drawBitmap(body,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else if (dy>0) {
+                        Bitmap body = BitmapFactory.decodeResource(context.getResources(),R.drawable.northbody);
+                        body = Bitmap.createScaledBitmap(body,grid,grid,false);
+                        canvas.drawBitmap(body,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    } else {
+                        Bitmap body = BitmapFactory.decodeResource(context.getResources(),R.drawable.southbody);
+                        body = Bitmap.createScaledBitmap(body,grid,grid,false);
+                        canvas.drawBitmap(body,snakeBody.get(i).getX(),snakeBody.get(i).getY(),paint);
+                    }
                 }
             }
 
             // Draw Food
-            paint.setColor(Color.MAGENTA);
-            paint.setStyle(Paint.Style.FILL);
-            canvas.drawRect(sfood.getRect(),paint);
+//            paint.setColor(Color.MAGENTA);
+//            paint.setStyle(Paint.Style.FILL);
+//            canvas.drawRect(sfood.getRect(),paint);
+            // Draw first food
+            if(first) {
+                canvas.drawBitmap(sfood.getFood(),sfood.getX(),sfood.getY(),paint);
+            } else if(this.collision(snake.getRect(), sfood.getRect())) {
+                canvas.drawBitmap(sfood.getFood(),sfood.getX(),sfood.getY(),paint);
+                first = false;
+            }
 
             // Vertical lines
             paint.setColor(Color.RED);
-            for (int s = 0; s < screenX; s+=60) {
-                canvas.drawLine(grid+s,60,grid+s,screenY,paint);
+            for (int s = 0; s < screenX; s+=grid) {
+                canvas.drawLine(grid+s,grid,grid+s,screenY,paint);
             }
             //Horizontal lines
-            for(int s = 0; s<screenY; s+=60) {
+            for(int s = 0; s<screenY; s+=grid) {
                 canvas.drawLine(0,grid+s,screenX,grid+s,paint);
             }
 
@@ -212,11 +261,6 @@ public class GameBoard extends SurfaceView implements Runnable {
         playing = true;
         thread = new Thread(this);
         thread.start();
-        try {
-            thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
