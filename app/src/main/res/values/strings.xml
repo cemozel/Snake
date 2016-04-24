@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">SnakeBox</string>
+    <string name="app_name">Competitive Snake</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="easyButton">Easy</string>
+    <string name="mediumButton">Medium</string>
+    <string name="hardButton">Hard</string>
 </resources>

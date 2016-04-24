@@ -15,7 +15,7 @@ public class Walls {
     public int sX = GameBoard.screenX;
     public int sY = GameBoard.screenY;
     private Paint paint = new Paint();
-    private Canvas canvas = new Canvas();
+
 
     public Walls() {
 
@@ -38,12 +38,30 @@ public class Walls {
         return new Rect(0,grid,grid,sY-grid);
     }
 
-    public void draw() {
+    public void draw(Canvas canvas) {
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawRect(northWall(),paint);
-        canvas.drawRect(southWall(),paint);
-        canvas.drawRect(eastWall(),paint);
-        canvas.drawRect(westWall(),paint);
+        if (MainActivity.gameDiff==2||MainActivity.gameDiff==3) {
+            canvas.drawRect(northWall(),paint);
+            canvas.drawRect(southWall(),paint);
+            canvas.drawRect(eastWall(),paint);
+            canvas.drawRect(westWall(),paint);
+        }
+    }
+
+    public Rect getNorthWall() {
+        return northWall();
+    }
+
+    public Rect getSouthWall() {
+        return southWall();
+    }
+
+    public Rect getWestWall() {
+        return westWall();
+    }
+
+    public Rect getEastWall() {
+        return eastWall();
     }
 }

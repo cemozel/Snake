@@ -4,16 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="sonetta.snakebox.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="sonetta.snakebox.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
+        android:src="@drawable/backgroundimage"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:tint="#2affffff" />
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/easyButton"
+        android:id="@+id/easyButton"
+        android:clickable="true"
+        android:textColor="#64ff00"
+        android:textSize="24sp"
+        android:layout_marginTop="46dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:background="#646464"
+        android:onClick="startEasy"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mediumButton"
+        android:id="@+id/mediumButton"
+        android:clickable="true"
+        android:textColor="#64ff00"
+        android:textSize="25sp"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/easyButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="startMedium"
+        android:background="#646464" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hardButton"
+        android:id="@+id/hardButton"
+        android:clickable="true"
+        android:textColor="#64ff00"
+        android:layout_marginTop="48dp"
+        android:layout_below="@+id/mediumButton"
+        android:textSize="26sp"
+        android:onClick="startHard"
+        android:background="#646464" />
+
 </RelativeLayout>
